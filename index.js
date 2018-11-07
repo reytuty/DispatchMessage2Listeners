@@ -69,7 +69,7 @@ class DispatchMessage2Listeners {
         }
         var last = this._lastMessages.get(key) ;
         var newstr = data ;
-        if( ! newstr != last){
+        if( newstr != last){
             //is new
             last = newstr;
             this._lastMessages.set(key, last);
