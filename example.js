@@ -1,4 +1,4 @@
-const DispatchMessage2Listeners = require('./DispatchMessage2Listeners.js') ;
+const DispatchMessage2Listeners = require('DispatchMessage2Listeners') ;
 
 const NmeaBuffer = require( 'nmea-buffer' ) ;
 
@@ -27,7 +27,7 @@ n2.addListener("a",  (d)=>{
     console.log("recived a in n2", d) ;
 } )
 
-n2.addListener("B",  (d)=>{
+n2.addListenerOnChange("B",  (d)=>{
     console.log("recived B in n2", d) ;
 } )
 const Buffer        = require('buffer').Buffer ;
@@ -38,4 +38,6 @@ n2.parseData(data) ;
 
 //if you want to force send message to listeners:
 
+n2._dispatchToListeners("B", "message here")
+n2._dispatchToListeners("B", "message here")
 n2._dispatchToListeners("B", "message here")

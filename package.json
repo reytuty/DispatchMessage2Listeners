@@ -1,0 +1,20 @@
+{
+  "name": "DispatchMessage2Listeners",
+  "version": "1.0.0",
+  "description": "To dispatch events to listeners on stream recived, and listeners if is message is new",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reytuty/DispatchMessage2Listeners.git"
+  },
+  "keywords": ["stream", "socket", "dispatch socket message"],
+  "author": "Renato Miawaki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reytuty/DispatchMessage2Listeners/issues"
+  },
+  "homepage": "https://github.com/reytuty/DispatchMessage2Listeners#readme"
+}

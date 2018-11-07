@@ -104,7 +104,7 @@ class DispatchMessage2Listeners {
      * @param {*} methodName 
      * @param {*} listener 
      */
-    addListenerChange( methodName, listener ){
+    addListenerOnChange( methodName, listener ){
         pushToMap( this._listenersMerge, methodName, listener ) ;
     }
     /**
