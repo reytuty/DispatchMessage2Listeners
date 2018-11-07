@@ -1,5 +1,10 @@
 # DispatchMessage2Listeners
 
+* Author: Renato Miawaki
+
+When you need to dispatch events to methods (listeners) and filter if message is equal.
+
+For socket stream you can use to separate messages and distribute just for clients who want to get the message
 
 ## For use in stream
 

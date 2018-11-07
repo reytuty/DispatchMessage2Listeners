@@ -28,7 +28,6 @@ const pushToGroup = (listenerList, groupKey, value)=>{
 }
 
 class DispatchMessage2Listeners {
-
     /**
      * 
      * bytes to separate messages

@@ -1,6 +1,6 @@
 {
   "name": "dispatch-message2listeners",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "To dispatch events to listeners on stream recived, and listeners if is message is new",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,7 @@
     "socket",
     "dispatch socket message",
     "DispatchMessage2Listeners",
-    "miawaki",
+    "renato miawaki",
     "reytuty",
     "event dispatcher",
     "nmea",
