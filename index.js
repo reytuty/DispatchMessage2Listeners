@@ -64,8 +64,9 @@ class DispatchMessage2Listeners {
      */
     _dataRecived(data){
         let d = this._parser( data ) ;
+        d.raw = data ;
         if(d){
-            this._dispatchToListeners( d.header, data ) ;
+            this._dispatchToListeners( d.header, d ) ;
         }
     }
     set showLog(v){
