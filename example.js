@@ -1,4 +1,4 @@
-const DispatchMessage2Listeners = require('dispatch-message2listeners') ;
+const DispatchMessage2Listeners = require('./index') ;
 
 const NmeaBuffer = require( 'nmea-buffer' ) ;
 
@@ -41,3 +41,27 @@ n2.parseData(data) ;
 n2._dispatchToListeners("B", "message here")
 n2._dispatchToListeners("B", "message here")
 n2._dispatchToListeners("B", "message here")
+
+
+
+const n3 = new DispatchMessage2Listeners( 10, (data)=>{
+    let parsedString = JSON.parse( data.toString() ) ;
+    return { header:parsedString.method, message:parsedString.body }
+} ) ;
+var objGroup = {__id:23234234}
+n3.addListener("B",  (d)=>{
+    console.log("recived B again in n3", d) ;
+}, objGroup ) ;
+
+n3.addListenerOnChange("B",  (d)=>{
+    console.log("recived B once in n3", d) ;
+}, objGroup ) ;
+
+n3._dispatchToListeners("B", "another message again") ;
+n3._dispatchToListeners("B", "another message again") ;
+n3._dispatchToListeners("B", "another message again") ;
+n3.removeListenersByGroup( objGroup ) ;
+//just 3 first message neet to recive response
+n3._dispatchToListeners("B", "another message again") ;
+n3._dispatchToListeners("B", "another message again") ;
+n3._dispatchToListeners("B", "another message again") ;

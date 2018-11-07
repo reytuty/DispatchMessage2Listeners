@@ -1,6 +1,6 @@
 {
   "name": "dispatch-message2listeners",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "To dispatch events to listeners on stream recived, and listeners if is message is new",
   "main": "index.js",
   "scripts": {
@@ -10,11 +10,24 @@
     "type": "git",
     "url": "git+https://github.com/reytuty/DispatchMessage2Listeners.git"
   },
-  "keywords": ["stream", "socket", "dispatch socket message", "DispatchMessage2Listeners", "miawaki","reytuty","event dispatcher", "nmea", "nmea event dispatcher"],
+  "keywords": [
+    "stream",
+    "socket",
+    "dispatch socket message",
+    "DispatchMessage2Listeners",
+    "miawaki",
+    "reytuty",
+    "event dispatcher",
+    "nmea",
+    "nmea event dispatcher"
+  ],
   "author": "Renato Miawaki",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/reytuty/DispatchMessage2Listeners/issues"
   },
-  "homepage": "https://github.com/reytuty/DispatchMessage2Listeners#readme"
+  "homepage": "https://github.com/reytuty/DispatchMessage2Listeners#readme",
+  "dependencies": {
+    "socketstream2event": "^1.0.3"
+  }
 }

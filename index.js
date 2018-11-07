@@ -18,6 +18,14 @@ const dispatchToList = (list, data)=>{
         }
     }) ;
 }
+const pushToGroup = (listenerList, groupKey, value)=>{
+    let itens = [] ;
+    if( listenerList.has(groupKey) ){
+        itens = listenerList.get(groupKey) ;
+    }
+    itens.push(value)
+    listenerList.set(groupKey, itens) ;
+}
 
 class DispatchMessage2Listeners {
 
@@ -38,6 +46,7 @@ class DispatchMessage2Listeners {
         
         this._listeners             = new Map() ;
         this._listenersMerge        = new Map() ;
+        this._listenersGroup        = new Map() ;
         this._logOn                 = false ;
 
         /**
@@ -96,7 +105,12 @@ class DispatchMessage2Listeners {
      * @param {*} methodName 
      * @param {*} listener 
      */
-    addListener( methodName, listener ){
+    addListener( methodName, listener, groupKey = null ){
+        if(groupKey){
+            //add to a group to posibility remove many listener from group
+            pushToGroup(this._listenersGroup, groupKey, {methodName, listener}) ;
+            
+        }
         pushToMap( this._listeners, methodName, listener ) ;
     }
     /**
@@ -104,7 +118,12 @@ class DispatchMessage2Listeners {
      * @param {*} methodName 
      * @param {*} listener 
      */
-    addListenerOnChange( methodName, listener ){
+    addListenerOnChange( methodName, listener, groupKey = null ){
+        if(groupKey){
+            //add to a group to posibility remove many listener from group
+            pushToGroup(this._listenersGroup, groupKey, {methodName, listener}) ;
+            
+        }
         pushToMap( this._listenersMerge, methodName, listener ) ;
     }
     /**
@@ -113,10 +132,22 @@ class DispatchMessage2Listeners {
      * @param {*} listener 
      */
     removeListener( methodName, listener ){
-        if( ! listenersMerge.has(methodName)? listenersMerge.get(methodName).delete( listener ) : false ){
-            return listeners.has(methodName)? listeners.get(methodName).delete( listener ) : false ;
+        if( ! ( this._listenersMerge.has(methodName) ? this._listenersMerge.get(methodName).delete( listener ) : false ) ) {
+            return this._listeners.has(methodName)? this._listeners.get(methodName).delete( listener ) : false ;
         }
         return false ;
+    }
+    /**
+     * grouped listeners can be all removed using this method
+     * @param {*} group 
+     */
+    removeListenersByGroup( group ){
+        if( this._listenersGroup.has( group ) ){
+            let listToRemove = this._listenersGroup.get(group) ;
+            listToRemove.forEach((item)=>{
+                this.removeListener( item.methodName, item.listener ) ;
+            })
+        }
     }
 }
 
