@@ -1,4 +1,4 @@
-const DispatchMessage2Listeners = require('DispatchMessage2Listeners') ;
+const DispatchMessage2Listeners = require('dispatch-message2listeners') ;
 
 const NmeaBuffer = require( 'nmea-buffer' ) ;
 
