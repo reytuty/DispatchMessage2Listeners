@@ -6,14 +6,17 @@ const NmeaBuffer = require( 'nmea-buffer' ) ;
 const n1 = new DispatchMessage2Listeners( 10, NmeaBuffer.parse ) ;
 n1.showLog = true ;
 n1.addListener("a", (d)=>{
-    console.log("recived a in n1", d) ;
+    console.log("recived a in n1", d.message) ;
 } ) ;
 
 n1.addListener("B", (d)=>{
-    console.log("recived B in n1", d) ;
+    console.log("recived B in n1", d.message) ;
+} ) ;
+n1.addListenerAll((d)=>{
+    console.log("recived ALL in n1", d.message) ;
 } ) ;
 
-let data = [ ... NmeaBuffer.getMessageBuffer("a", "testing 123"), ...NmeaBuffer.getMessageBuffer("a", "testing 456"), ...NmeaBuffer.getMessageBuffer("B", "testing 789") ];
+let data = [ ... NmeaBuffer.getMessageBuffer("a", "just for a 1"), ...NmeaBuffer.getMessageBuffer("a", "just for a 2"), ...NmeaBuffer.getMessageBuffer("B", "just for Bs"), ...NmeaBuffer.getMessageBuffer("c", "just for c") ];
 
 n1.parseData(data) ;
 
