@@ -45,7 +45,7 @@ class DispatchMessage2Listeners {
         
         this._listeners             = new Map() ;
         this._listenersMerge        = new Map() ;
-        this._listenersAll          = new Map() ;
+
         this._listenersGroup        = new Map() ;
         this._logOn                 = false ;
 
@@ -73,30 +73,25 @@ class DispatchMessage2Listeners {
         this._logOn = v ;
     }
     _dispatchToListeners( key, data ){
-        if(!this._listeners.has(key) && !this._listenersMerge.has(key) && this._listenersAll.size == 0){
+        if(!this._listeners.has(key) && !this._listenersMerge.has(key) && !this._listeners.has("*") && !this._listenersMerge.has("*") ){
             if(this._logOn) console.log("has no listener for ", key) ;
             return ;
-        }
-        if(this._listenersAll.size > 0){
-            this._listenersAll.forEach((v, lis)=>{
-                lis( data );
-            })
         }
         var last = this._lastMessages.get(key) ;
         var newstr = data ;
         if( newstr != last){
+            dispatchToList( this._listenersMerge.get("*"), data ) ;
             //is new
             last = newstr;
             this._lastMessages.set(key, last);
             //dispatch to merges
-            var listenerListMerge = this._listenersMerge.get(key) ;
             if(this._logOn) console.log("NEW message")
-            dispatchToList( listenerListMerge, data ) ;
+            dispatchToList( this._listenersMerge.get(key), data ) ;
         } else {
             if(this._logOn) console.log("repeated message")
         }
-        var listenerList = this._listeners.get(key) ;
-        dispatchToList( listenerList, data ) ;
+        dispatchToList( this._listeners.get("*"), data ) ;
+        dispatchToList( this._listeners.get(key), data ) ;
     }
     /**
      * You need put stream data here
@@ -106,8 +101,12 @@ class DispatchMessage2Listeners {
     parseData( data ){
         return this._s2e.parseData( data ) ;
     }
-    addListenerAll( listener ){
-        this._listenersAll.set( listener, true ) ;
+    addListenerAll( listener, groupKey = null ){
+        return this.addListener("*", listener, groupKey ) ;
+    }
+
+    addListenerAllOnChange( listener, groupKey = null ){
+        return this.addListenerOnChange("*", listener, groupKey ) ;
     }
     /**
      * Call when get message with method like methodName
@@ -142,7 +141,6 @@ class DispatchMessage2Listeners {
      */
     removeListener( methodName, listener ){
         if( ! ( this._listenersMerge.has(methodName) ? this._listenersMerge.get(methodName).delete( listener ) : false ) ) {
-            ( this._listenersAll.has(listener) ? this._listenersAll.delete(listener) : false ) ;
             return this._listeners.has(methodName)? this._listeners.get(methodName).delete( listener ) : false ;
         }
         return false ;

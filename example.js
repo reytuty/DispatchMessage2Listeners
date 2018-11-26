@@ -15,7 +15,9 @@ n1.addListener("B", (d)=>{
 n1.addListenerAll((d)=>{
     console.log("recived ALL in n1", d.message) ;
 } ) ;
-
+n1.addListenerAllOnChange((d)=>{
+    console.log("recived ALL on change in n1", d.message) ;
+} ) ;
 let data = [ ... NmeaBuffer.getMessageBuffer("a", "just for a 1"), ...NmeaBuffer.getMessageBuffer("a", "just for a 2"), ...NmeaBuffer.getMessageBuffer("B", "just for Bs"), ...NmeaBuffer.getMessageBuffer("c", "just for c") ];
 
 n1.parseData(data) ;
