@@ -1,4 +1,3 @@
-const Stream2Event = require('socketstream2event') ;
 
 const pushToMap = (map, key, client) => {
     if( ! map.has( key ) ){
@@ -9,7 +8,6 @@ const pushToMap = (map, key, client) => {
 }
 const dispatchToList = (list, data)=>{
     if(!list || list.size == 0){
-        if(this._logOn) console.log("Lista vazia") ;
         return ;
     }
     list.forEach((v,k)=>{
@@ -35,12 +33,8 @@ class DispatchMessage2Listeners {
      * parser method whos get data and returns {header, message}
      * @param {*} parser 
      */
-    constructor( p_bytesSeparetor, parser ){
+    constructor(){
         //checking parser interface
-        if( !parser || ! typeof parser === "function" ){
-            throw Error("parser need to be a method whos get data and returns { header, message }") ;
-        }
-        this._parser                = parser ;
         this._lastMessages          = new Map() ;
         
         this._listeners             = new Map() ;
@@ -48,38 +42,35 @@ class DispatchMessage2Listeners {
 
         this._listenersGroup        = new Map() ;
         this._logOn                 = false ;
-
-        /**
-         * nmea patterns 10 = new line to new message
-         */
-        this._s2e = new Stream2Event( p_bytesSeparetor ) ;
-        this._s2e.addOnData( (d)=>{
-            this._dataRecived(d) ;
-         } ) ;
     }
-    /**
-     * You can add data here, but just once data per once
-     * 
-     * @param {*} data 
-     */
-    _dataRecived(data){
-        let d = this._parser( data ) ;
-        d.raw = data ;
-        if(d){
-            this._dispatchToListeners( d.header, d ) ;
-        }
-    }
+   
     set showLog(v){
         this._logOn = v ;
     }
-    _dispatchToListeners( key, data ){
+    //override this if you need change the way to compare
+    compare(v1, v2){
+        if(v1 === undefined && v2 === undefined){
+            return true ;
+        }
+        if(v1 === undefined  || v2 === undefined ){
+            return false ;
+        }
+        return JSON.stringify(v1) == JSON.stringify(v2) ;
+    }
+    /**
+     * When you get message, call this method.
+     * It will send to listener data based in key
+     * @param {*} key 
+     * @param {*} data 
+     */
+    dispatchToListeners( key, data ){
         if(!this._listeners.has(key) && !this._listenersMerge.has(key) && !this._listeners.has("*") && !this._listenersMerge.has("*") ){
             if(this._logOn) console.log("has no listener for ", key) ;
             return ;
         }
         var last = this._lastMessages.get(key) ;
         var newstr = data ;
-        if( newstr != last){
+        if( ! this.compare( newstr , last ) ){
             dispatchToList( this._listenersMerge.get("*"), data ) ;
             //is new
             last = newstr;
@@ -92,14 +83,6 @@ class DispatchMessage2Listeners {
         }
         dispatchToList( this._listeners.get("*"), data ) ;
         dispatchToList( this._listeners.get(key), data ) ;
-    }
-    /**
-     * You need put stream data here
-     * Awais recived data or part of data
-     * @param {*} data 
-     */
-    parseData( data ){
-        return this._s2e.parseData( data ) ;
     }
     addListenerAll( listener, groupKey = null ){
         return this.addListener("*", listener, groupKey ) ;

@@ -8,3 +8,6 @@ Now has a method to listen all
 
 Now has a method to listen all and all to merge. Changed logic to add to all, if method name is "*" is equal to add all
 
+# 1.2.1
+
+BUG FIX - Data raw is not sended to listeners, just 
