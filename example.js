@@ -9,22 +9,22 @@ const n1 = new DispatchMessage2Listeners() ;
 let s2e = new Stream2Event( 10 ) ;
 s2e.addOnData((data)=>{
     let nmeaMessage = NmeaBuffer.parse(data) ;
-    n1.dispatchToListeners( nmeaMessage.header, data ) ;
+    n1.dispatchToListeners( nmeaMessage.header, nmeaMessage ) ;
 })
 
 n1.showLog = true ;
 n1.addListener("a", (d)=>{
-    console.log("\n\n*1 recived A in n1", NmeaBuffer.parse(d).message) ;
+    console.log("\n\n*1 recived A in n1", d.message) ;
 } ) ;
 
 n1.addListener("B", (d)=>{
-    console.log("\n\n*2 recived B in n1", NmeaBuffer.parse(d).message) ;
+    console.log("\n\n*2 recived B in n1", d.message) ;
 } ) ;
 n1.addListenerAll((d)=>{
-    console.log("\n\n*3 recived becouse listener all message in n1", NmeaBuffer.parse(d).message) ;
+    console.log("\n\n*3 recived becouse listener all message in n1", d.message) ;
 } ) ;
 n1.addListenerAllOnChange((d)=>{
-    console.log("\n\n*4 recived listen all if CHANGE in n1", NmeaBuffer.parse(d).message) ;
+    console.log("\n\n*4 recived listen all if CHANGE in n1", d.message) ;
 } ) ;
 let data = [ ... NmeaBuffer.getMessageBuffer("a", "just for A, test 1"), ...NmeaBuffer.getMessageBuffer("a", "just for A test 2"), ...NmeaBuffer.getMessageBuffer("B", "just for Bs"), ...NmeaBuffer.getMessageBuffer("c", "just for c"), ...NmeaBuffer.getMessageBuffer("c", "just for c") ];
 
@@ -34,6 +34,10 @@ console.log("\n End test n1. \n ................................. \n\n") ;
 
 //Exemple 2 - parsing using json with method and body attributes
 const n2 = new DispatchMessage2Listeners() ;
+s2e.addOnData((data)=>{
+    let nmeaMessage = NmeaBuffer.parse(data) ;
+    n2.dispatchToListeners( nmeaMessage.header, data ) ;
+})
 n2.addListener("*",  (d)=>{
     console.log("\n\n*recived * in n2", NmeaBuffer.parse(d)) ;
 } )
@@ -99,7 +103,7 @@ n4.addListenerOnChange("C",  (d)=>{
     console.log("recived C once in n4", d) ;
 }, objGroup ) ;
 
-for( var i = 0; i < 400; i++){
+for( var i = 0; i < 4; i++){
     n4.dispatchToListeners("C", {m:"another message again"}) ;
 }
 
