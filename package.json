@@ -1,6 +1,6 @@
 {
   "name": "dispatch-message-to-listeners",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "To dispatch events to listeners on recived event, and listeners if is message is new",
   "main": "index.js",
   "scripts": {

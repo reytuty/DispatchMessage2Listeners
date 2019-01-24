@@ -11,7 +11,7 @@ const dispatchToList = (list, data)=>{
         return ;
     }
     list.forEach((v,k)=>{
-        if( v ){
+        if( v && k ){
             k(data);
         }
     }) ;
