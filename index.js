@@ -12,7 +12,11 @@ const dispatchToList = (list, data)=>{
     }
     list.forEach((v,k)=>{
         if( v && k ){
-            k(data);
+            try{
+                k(data);
+            } catch(e){
+                console.log(e) ;
+            }
         }
     }) ;
 }
